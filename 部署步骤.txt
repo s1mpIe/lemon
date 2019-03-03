@@ -1,0 +1,24 @@
+1、在Linux下准备两个Tomcat；（可以解压两个，也可以通过之前的tomcat拷贝两个 cp -rf tomcat tomcat-web）
+
+2、保证两个tomcat的端口不要重复，避免端口冲突；修改tomcat/conf/server.xml
+
+3、把课程共享的两个项目分别上传到Linux的两个tomcat的webapp下；
+
+4、修改dataservice的配置文件：
+   a、redis.properties 改成你自己的redis的ip和端口；
+   b、datasource.properties 改成你自己的数据库ip和端口以及数据库名称、用户名、密码；
+   c、applicationContext-dubbo-provider.xml 改成你自己的zookeeper的ip和端口；
+
+5、把Linux防火墙关闭：
+   systemctl disable firewalld
+   systemctl stop firewalld
+6、在数据库中创建与datasource.properties配置文件配置的数据库名称一致的数据库，导入初始化的数据，脚本：p2p-data-703.sql；
+
+7、启动dataservice项目的tomcat；./startup.sh | tail -f ../logs/catalina.out
+
+8、修改p2p项目的配置文件：
+   a、applicationContext-dubbo-consumer.xml 修改其中的zookeeper地址，改为你自己的ip和端口；
+
+9、启动p2p项目的tomcat；./startup.sh | tail -f ../logs/catalina.out
+
+10、访问p2p项目：http://linux的ip:tomcat的端口/p2p
